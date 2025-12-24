@@ -31,7 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (data: LoginRequest) => {
     const response = await authApi.login(data)
     const { token: newToken, userId, username, role, phone } = response.data
-    const newUser: User = { id: userId, username, role, phone }
+    
+    // 将后端数字角色映射为前端字符串角色
+    const mappedRole = role === 1 ? 'ADMIN' : 'USER'
+    const newUser: User = { id: userId, username, role: mappedRole, phone }
     
     setToken(newToken)
     setUser(newUser)
