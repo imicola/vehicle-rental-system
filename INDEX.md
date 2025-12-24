@@ -168,14 +168,14 @@
 
 按顺序检查：
 
-- [ ] PostgreSQL已安装并启动
-- [ ] 数据库 `vehicle_rental` 已创建
-- [ ] `application.properties` 中的连接信息正确
-- [ ] pom.xml中的依赖已下载 (`mvn clean install`)
-- [ ] `schema.sql` 已执行，表已创建
-- [ ] 初始数据已插入（3个门店、3个分类、4个用户）
-- [ ] 应用能够正常启动，无数据库连接错误
-- [ ] 可以查询表中的数据
+- [x] PostgreSQL已安装并启动
+- [x] 数据库 `vehicle_rental` 已创建
+- [x] `application.properties` 中的连接信息正确
+- [x] pom.xml中的依赖已下载 (`mvn clean install`)
+- [x] `schema.sql` 已执行，表已创建
+- [x] 初始数据已插入（3个门店、3个分类、4个用户）
+- [x] 应用能够正常启动，无数据库连接错误
+- [x] 可以查询表中的数据
 
 ---
 
@@ -236,8 +236,6 @@
 
 ## 📞 快速问题解答
 
-**Q: 数据库密码是什么？**
-A: 默认是 `postgres`（PostgreSQL安装时设置的密码），可在 `application.properties` 中修改
 
 **Q: 如何重置数据库？**
 A: 在 `application.properties` 中改 `spring.jpa.hibernate.ddl-auto=create-drop`，然后重启应用（**谨慎！会删除所有数据**）
@@ -313,6 +311,3 @@ A: 查询 `orders` 表，其中 `pickup_store_id != return_store_id`
 **数据库**: PostgreSQL 12+
 
 ---
-
-Have a great time developing! 🚀
-
