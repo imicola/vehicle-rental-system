@@ -21,6 +21,7 @@ export default function VehicleList() {
   const [selectedStore, setSelectedStore] = useState<string>('')
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
   const [showModal, setShowModal] = useState(false)
 
@@ -31,11 +32,12 @@ export default function VehicleList() {
   const loadData = async () => {
     try {
       const [vehiclesRes, storesRes, categoriesRes] = await Promise.all([
-        vehicleApi.search({}),
+        vehicleApi.getAll(),
         storeApi.getAll(),
         categoryApi.getAll(),
       ])
-      setVehicles(vehiclesRes.data)
+      // 初始展示仅显示可租车辆（status=0）
+      setVehicles(vehiclesRes.data.filter((v) => v.status === 0))
       setStores(storesRes.data)
       setCategories(categoriesRes.data)
     } catch (error) {
@@ -46,6 +48,18 @@ export default function VehicleList() {
   }
 
   const handleSearch = async () => {
+    // 前端校验，避免后端 400
+    if (!selectedStore || !startTime || !endTime) {
+      setErrorMsg('请先选择取车门店，并填写开始/结束时间再搜索。')
+      return
+    }
+
+    if (new Date(endTime) <= new Date(startTime)) {
+      setErrorMsg('结束时间必须晚于开始时间。')
+      return
+    }
+
+    setErrorMsg('')
     setLoading(true)
     try {
       const params: { storeId?: number; start?: string; end?: string } = {}
@@ -56,6 +70,7 @@ export default function VehicleList() {
       setVehicles(res.data)
     } catch (error) {
       console.error('搜索失败', error)
+      setErrorMsg('搜索失败，请检查时间是否晚于当前或稍后重试。')
     } finally {
       setLoading(false)
     }
@@ -129,12 +144,13 @@ export default function VehicleList() {
             </button>
           </div>
         </div>
+        {errorMsg && <div className="text-muted" style={{ marginTop: '0.5rem', color: '#ef4444' }}>{errorMsg}</div>}
       </div>
 
       {vehicles.length === 0 ? (
         <div className="empty-state card">
           <div className="empty-state-icon">🚗</div>
-          <p>暂无可用车辆</p>
+          <p>暂无可用车辆，请先选择门店和时间搜索。</p>
         </div>
       ) : (
         <div className="grid grid-cols-3">
