@@ -147,8 +147,8 @@ ON CONFLICT DO NOTHING;
 
 -- 插入示例用户
 INSERT INTO users (username, password, phone, role) VALUES
-('admin', 'admin123', '13900000001', 1),
-('user001', 'password123', '13900000002', 0),
-('user002', 'password123', '13900000003', 0),
-('store_staff', 'staff123', '13900000004', 2)
+('admin', '$2a$10$CNOhc9tOHBvpQ.65y93pVuXVktqzUp8QHgkOamfoZxc/TwjY34N0u', '13900000001', 1),
+('user001', '$2a$10$YfFTdOvlqbPJIlIcBTFEwuf0evb595A8nwf0b6e2lL9O65mDoZ5qq', '13900000002', 0),
+('user002', '$2a$10$YfFTdOvlqbPJIlIcBTFEwuf0evb595A8nwf0b6e2lL9O65mDoZ5qq', '13900000003', 0),
+('store_staff', '$2a$10$QYWnndrs8chX5nB.WW6FS.5MpEHCyCKqE7VKJPlkBoVQPgSnQUGtO', '13900000004', 2)
 ON CONFLICT DO NOTHING;

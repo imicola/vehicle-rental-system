@@ -38,3 +38,5 @@ build/
 
 ### plan ###
 plan/
+
+frontend/node_modules

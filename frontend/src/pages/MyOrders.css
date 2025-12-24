@@ -1,0 +1,99 @@
+.my-orders-page {
+  padding-bottom: 2rem;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.order-no {
+  font-weight: 600;
+  margin-right: 0.75rem;
+}
+
+.order-time {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.order-body {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.order-vehicle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+}
+
+.vehicle-icon {
+  font-size: 2.5rem;
+}
+
+.order-vehicle h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.order-details {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.detail-item .amount {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.order-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+  .order-body {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .order-details {
+    gap: 1rem;
+  }
+}
