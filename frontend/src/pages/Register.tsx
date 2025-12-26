@@ -17,6 +17,16 @@ export default function Register() {
     e.preventDefault()
     setError('')
 
+    if (username.length < 3 || username.length > 50) {
+      setError('用户名长度需在3-50之间')
+      return
+    }
+
+    if (phone && !/^1[3-9]\d{9}$/.test(phone)) {
+      setError('手机号格式不正确，应为1开头的11位数字')
+      return
+    }
+
     if (password !== confirmPassword) {
       setError('两次输入的密码不一致')
       return
@@ -33,8 +43,13 @@ export default function Register() {
       await register({ username, password, phone: phone || undefined })
       navigate('/login')
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { message?: string } } }
-      setError(error.response?.data?.message || '注册失败，请稍后重试')
+      const error = err as { response?: { data?: { message?: string; error?: string; errors?: { defaultMessage?: string }[] } } }
+      setError(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.response?.data?.errors?.[0]?.defaultMessage ||
+          '注册失败，请稍后重试'
+      )
     } finally {
       setLoading(false)
     }

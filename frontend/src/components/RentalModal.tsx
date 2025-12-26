@@ -24,8 +24,9 @@ export default function RentalModal({
 }: RentalModalProps) {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const [pickupStoreId, setPickupStoreId] = useState(String(vehicle.storeId))
-  const [returnStoreId, setReturnStoreId] = useState(String(vehicle.storeId))
+  const initialStoreId = vehicle.storeId ?? vehicle.store?.id ?? stores[0]?.id ?? ''
+  const [pickupStoreId, setPickupStoreId] = useState(String(initialStoreId))
+  const [returnStoreId, setReturnStoreId] = useState(String(initialStoreId))
   const [startTime, setStartTime] = useState(
     defaultStartTime || dayjs().add(1, 'hour').format('YYYY-MM-DDTHH:00')
   )
@@ -57,7 +58,32 @@ export default function RentalModal({
       return
     }
 
-    if (dayjs(endTime).isBefore(dayjs(startTime))) {
+    const pickupId = Number(pickupStoreId)
+    const returnId = Number(returnStoreId)
+    const start = dayjs(startTime)
+    const end = dayjs(endTime)
+
+    if (!Number.isFinite(pickupId)) {
+      setError('请选择取车门店')
+      return
+    }
+
+    if (!Number.isFinite(returnId)) {
+      setError('请选择还车门店')
+      return
+    }
+
+    if (!start.isValid() || !end.isValid()) {
+      setError('时间格式不正确')
+      return
+    }
+
+    if (!start.isAfter(dayjs())) {
+      setError('取车时间必须晚于当前时间')
+      return
+    }
+
+    if (!end.isAfter(start)) {
       setError('结束时间必须晚于开始时间')
       return
     }
@@ -67,10 +93,10 @@ export default function RentalModal({
       await orderApi.create({
         userId: user.id,
         vehicleId: vehicle.id,
-        pickupStoreId: Number(pickupStoreId),
-        returnStoreId: Number(returnStoreId),
-        startTime: dayjs(startTime).format('YYYY-MM-DD HH:mm:ss'),
-        endTime: dayjs(endTime).format('YYYY-MM-DD HH:mm:ss'),
+        pickupStoreId: pickupId,
+        returnStoreId: returnId,
+        startTime: start.format('YYYY-MM-DDTHH:mm:ss'),
+        endTime: end.format('YYYY-MM-DDTHH:mm:ss'),
       })
       onSuccess()
       navigate('/orders')
