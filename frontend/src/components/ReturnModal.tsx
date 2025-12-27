@@ -10,7 +10,9 @@ interface ReturnModalProps {
 }
 
 export default function ReturnModal({ order, stores, onClose, onSuccess }: ReturnModalProps) {
-  const [returnStoreId, setReturnStoreId] = useState(String(order.returnStoreId))
+  const [returnStoreId, setReturnStoreId] = useState(
+    String(order.returnStoreId ?? stores[0]?.id ?? '')
+  )
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -20,7 +22,14 @@ export default function ReturnModal({ order, stores, onClose, onSuccess }: Retur
     setLoading(true)
 
     try {
-      await orderApi.returnVehicle(order.id, Number(returnStoreId))
+      const storeIdNum = Number(returnStoreId)
+      if (!Number.isFinite(storeIdNum)) {
+        setError('请选择归还门店')
+        setLoading(false)
+        return
+      }
+
+      await orderApi.returnVehicle(order.id, storeIdNum)
       onSuccess()
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } }

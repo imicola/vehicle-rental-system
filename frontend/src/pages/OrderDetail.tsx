@@ -52,9 +52,8 @@ export default function OrderDetail() {
     }
   }
 
-  const getStoreName = (storeId: number) => {
-    return stores.find((s) => s.id === storeId)?.name || '-'
-  }
+  const getStoreName = (storeId?: number, storeObj?: Store) =>
+    storeObj?.name || (storeId ? stores.find((s) => s.id === storeId)?.name : undefined) || '-'
 
   const handlePayDeposit = async () => {
     if (!order) return
@@ -135,11 +134,11 @@ export default function OrderDetail() {
             </div>
             <div className="info-item">
               <span className="info-label">取车门店</span>
-              <span className="info-value">{getStoreName(order.pickupStoreId)}</span>
+              <span className="info-value">{getStoreName(order.pickupStoreId, order.pickupStore)}</span>
             </div>
             <div className="info-item">
               <span className="info-label">还车门店</span>
-              <span className="info-value">{getStoreName(order.returnStoreId)}</span>
+              <span className="info-value">{getStoreName(order.returnStoreId, order.returnStore)}</span>
             </div>
             <div className="info-item">
               <span className="info-label">取车时间</span>
@@ -167,7 +166,7 @@ export default function OrderDetail() {
             </div>
           </div>
 
-          {order.status === 0 && (
+          {(order.status === 0 || order.status === 1) && (
             <div className="order-actions">
               {!depositPaid && (
                 <button className="btn btn-primary" onClick={handlePayDeposit}>

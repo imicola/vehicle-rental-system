@@ -38,7 +38,8 @@ export default function AdminOrders() {
     }
   }
 
-  const getStoreName = (id: number) => stores.find((s) => s.id === id)?.name || '-'
+  const getStoreName = (id?: number, storeObj?: Store) =>
+    storeObj?.name || (id ? stores.find((s) => s.id === id)?.name : undefined) || '-'
 
   const filteredOrders = filterStatus
     ? orders.filter((o) => String(o.status) === filterStatus)
@@ -102,8 +103,8 @@ export default function AdminOrders() {
                   </td>
                   <td>{order.user?.username || order.userId}</td>
                   <td>{order.vehicle?.brand} {order.vehicle?.model}</td>
-                  <td>{getStoreName(order.pickupStoreId)}</td>
-                  <td>{getStoreName(order.returnStoreId)}</td>
+                  <td>{getStoreName(order.pickupStoreId, order.pickupStore)}</td>
+                  <td>{getStoreName(order.returnStoreId, order.returnStore)}</td>
                   <td>{dayjs(order.startTime).format('MM-DD HH:mm')}</td>
                   <td>{dayjs(order.endTime).format('MM-DD HH:mm')}</td>
                   <td>¥{order.totalAmount?.toFixed(2)}</td>

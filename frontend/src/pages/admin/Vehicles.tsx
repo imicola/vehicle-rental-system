@@ -161,6 +161,7 @@ function AddVehicleModal({
   onSuccess: () => void
 }) {
   const [form, setForm] = useState<VehicleDTO>({
+    plateNumber: '',
     brand: '',
     model: '',
     categoryId: categories[0]?.id || 0,
@@ -196,6 +197,16 @@ function AddVehicleModal({
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             {error && <div className="auth-error">{error}</div>}
+            <div className="form-group">
+              <label className="form-label">车牌号</label>
+              <input
+                type="text"
+                className="form-input"
+                value={form.plateNumber}
+                onChange={(e) => setForm({ ...form, plateNumber: e.target.value })}
+                required
+              />
+            </div>
             <div className="form-group">
               <label className="form-label">品牌</label>
               <input

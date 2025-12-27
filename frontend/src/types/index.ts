@@ -65,6 +65,7 @@ export interface Vehicle {
 
 // 车辆DTO
 export interface VehicleDTO {
+  plateNumber: string
   brand: string
   model: string
   categoryId: number
