@@ -137,3 +137,104 @@ export interface StoreDTO {
   address?: string
   phone?: string
 }
+
+// ==================== 报表相关类型 ====================
+
+// 报表时间周期
+export type ReportPeriod = 'DAY' | 'WEEK' | 'MONTH' | 'YEAR'
+
+// 综合仪表盘数据
+export interface DashboardData {
+  // 关键指标
+  totalRevenue: number
+  totalMaintenanceCost: number
+  netProfit: number
+  totalOrders: number
+  completedOrders: number
+  averageUtilizationRate: number
+  
+  // 车辆统计
+  totalVehicles: number
+  availableVehicles: number
+  rentedVehicles: number
+  maintenanceVehicles: number
+  transferVehicles: number
+  
+  // 分布统计
+  vehicleByCategory: Record<string, number>
+  vehicleByStore: Record<string, number>
+  orderByStatus: Record<string, number>
+  revenueByStore: Record<string, number>
+  
+  // 趋势数据
+  revenueGrowthRate: number
+  orderGrowthRate: number
+}
+
+// 收入统计
+export interface RevenueStatistics {
+  period: string
+  totalRevenue: number
+  depositAmount: number
+  finalPaymentAmount: number
+  penaltyAmount: number
+  orderCount: number
+  completedOrderCount: number
+  cancelledOrderCount: number
+  averageOrderAmount: number
+}
+
+// 车辆利用率
+export interface VehicleUtilization {
+  vehicleId: number
+  licensePlate: string
+  model: string
+  categoryName: string
+  storeName: string
+  totalOrders: number
+  totalRentalDays: number
+  utilizationRate: number
+  totalRevenue: number
+  status: number
+}
+
+// 维修成本
+export interface MaintenanceCost {
+  vehicleId: number
+  licensePlate: string
+  model: string
+  categoryName: string
+  maintenanceCount: number
+  repairCount: number
+  serviceCount: number
+  inspectionCount: number
+  totalCost: number
+  averageCost: number
+  revenueMinusCost: number
+}
+
+// 订单趋势
+export interface OrderTrend {
+  period: string
+  totalOrders: number
+  pendingOrders: number
+  activeOrders: number
+  completedOrders: number
+  cancelledOrders: number
+  totalAmount: number
+  completionRate: number
+  cancellationRate: number
+}
+
+// 门店收入统计
+export interface StoreRevenue {
+  storeId: number
+  storeName: string
+  address: string
+  vehicleCount: number
+  orderCount: number
+  totalRevenue: number
+  maintenanceCost: number
+  netProfit: number
+  averageUtilization: number
+}

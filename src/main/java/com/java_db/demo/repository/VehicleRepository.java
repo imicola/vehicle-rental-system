@@ -79,4 +79,27 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
      * @return 该门店的所有车辆
      */
     List<Vehicle> findByStoreId(Integer storeId);
+    
+    // ==================== 报表统计查询方法 ====================
+    
+    /**
+     * 按状态统计车辆数量
+     */
+    @Query("SELECT v.status as status, COUNT(v) as count FROM Vehicle v GROUP BY v.status")
+    List<Object[]> countVehiclesByStatus();
+    
+    /**
+     * 按分类统计车辆数量
+     */
+    @Query("SELECT v.category.id as categoryId, v.category.name as categoryName, COUNT(v) as count " +
+           "FROM Vehicle v GROUP BY v.category.id, v.category.name")
+    List<Object[]> countVehiclesByCategory();
+    
+    /**
+     * 按门店统计车辆数量
+     */
+    @Query("SELECT v.store.id as storeId, v.store.name as storeName, COUNT(v) as count " +
+           "FROM Vehicle v GROUP BY v.store.id, v.store.name")
+    List<Object[]> countVehiclesByStore();
 }
+

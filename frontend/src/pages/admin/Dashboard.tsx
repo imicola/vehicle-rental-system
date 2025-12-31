@@ -8,6 +8,7 @@ export default function AdminDashboard() {
     { path: '/admin/stores', icon: '🏪', title: '门店管理', desc: '管理门店信息' },
     { path: '/admin/maintenance', icon: '🔧', title: '维护管理', desc: '车辆维护记录' },
     { path: '/admin/payments', icon: '💰', title: '支付记录', desc: '查看所有支付记录' },
+    { path: '/admin/reports', icon: '📊', title: '数据报表', desc: '数据分析与统计报表' },
   ]
 
   return (

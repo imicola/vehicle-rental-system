@@ -104,4 +104,58 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
      * @return 该门店的所有还车订单
      */
     List<Order> findByReturnStoreId(Integer returnStoreId);
+    
+    // ==================== 报表统计查询方法 ====================
+    
+    /**
+     * 统计指定时间范围内的订单数量（按状态分组）
+     */
+    @Query("SELECT o.status as status, COUNT(o) as count FROM Order o " +
+           "WHERE o.createdAt BETWEEN :startDate AND :endDate " +
+           "GROUP BY o.status")
+    List<Object[]> countOrdersByStatusBetweenDates(@Param("startDate") LocalDateTime startDate, 
+                                                    @Param("endDate") LocalDateTime endDate);
+    
+    /**
+     * 统计指定时间范围内的订单总金额
+     */
+    @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o " +
+           "WHERE o.createdAt BETWEEN :startDate AND :endDate")
+    Double sumTotalAmountBetweenDates(@Param("startDate") LocalDateTime startDate, 
+                                      @Param("endDate") LocalDateTime endDate);
+    
+    /**
+     * 按车辆ID统计订单数量和总收入
+     */
+    @Query("SELECT o.vehicle.id as vehicleId, COUNT(o) as orderCount, " +
+           "COALESCE(SUM(o.totalAmount), 0) as totalRevenue FROM Order o " +
+           "WHERE o.createdAt BETWEEN :startDate AND :endDate " +
+           "GROUP BY o.vehicle.id")
+    List<Object[]> getVehicleOrderStatistics(@Param("startDate") LocalDateTime startDate, 
+                                             @Param("endDate") LocalDateTime endDate);
+    
+    /**
+     * 按门店ID统计订单数量和总收入（基于取车门店）
+     */
+    @Query("SELECT o.pickupStore.id as storeId, COUNT(o) as orderCount, " +
+           "COALESCE(SUM(o.totalAmount), 0) as totalRevenue FROM Order o " +
+           "WHERE o.createdAt BETWEEN :startDate AND :endDate " +
+           "GROUP BY o.pickupStore.id")
+    List<Object[]> getStoreOrderStatistics(@Param("startDate") LocalDateTime startDate, 
+                                           @Param("endDate") LocalDateTime endDate);
+    
+    /**
+     * 统计指定车辆的总租赁天数
+     * 注意：由于JPQL不直接支持DATEDIFF，此方法已弃用，改用Java代码计算
+     */
+    // 此查询方法已注释，在Service层使用Java Stream计算租赁天数
+    
+    /**
+     * 按车辆统计订单数（用于报表）
+     */
+    @Query("SELECT o.vehicle.id, COUNT(o) FROM Order o " +
+           "WHERE o.status IN (1, 2) " +
+           "GROUP BY o.vehicle.id")
+    List<Object[]> countOrdersByVehicle();
 }
+

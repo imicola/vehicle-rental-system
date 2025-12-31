@@ -14,6 +14,7 @@ import AdminOrders from './pages/admin/Orders'
 import AdminStores from './pages/admin/Stores'
 import AdminMaintenance from './pages/admin/Maintenance'
 import AdminPayments from './pages/admin/Payments'
+import AdminReports from './pages/admin/Reports'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="admin/stores" element={<AdminRoute><AdminStores /></AdminRoute>} />
         <Route path="admin/maintenance" element={<AdminRoute><AdminMaintenance /></AdminRoute>} />
         <Route path="admin/payments" element={<AdminRoute><AdminPayments /></AdminRoute>} />
+        <Route path="admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
       </Route>
     </Routes>
   )

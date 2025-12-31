@@ -1,0 +1,21 @@
+对于数据库这个板块：
+src/main/resources ： 核心，有表，视图，触发器 | 配置文件(.properties, .yml) | 迁移脚本
+sample_data : 简单数据
+Verify_data : 验证数据
+
+---
+
+forntend: 前端
+
+src/main/frontend : 前端源码(js, ts, vue, react等) | 构建配置文件(package.json, webpack.config.js等) | 第三方库(node_modules等)
+api : 接口文档和测试工具(swagger) | Axios等请求库配置 -> src/api
+
+pages : 页面组件
+-> *.tsx => 网页组件
+-> *.css => 网页样式
+
+frontend/src/context/AuthContext.tsx : 前端验证用户身份和权限
+
+---
+
+backend: 后端
